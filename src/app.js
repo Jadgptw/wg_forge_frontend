@@ -73,9 +73,13 @@ export default (async function () {
     if(event.keyCode === ENTER){
       event.target.value = '';
 
-      const sortNode = document.querySelector('th > span');
-      const sortOption = (sortNode) ? sortNode.parentElement.firstChild.textContent.toLowerCase() : null;
-      sortByColumn(ordersList, sortOption);
+      const sortNode = document.querySelectorAll('th > span');
+      if(sortNode) {
+        sortNode.forEach(node => {
+          const sortOption = node.parentElement.firstChild.textContent.toLowerCase();
+          sortByColumn(ordersList, sortOption)
+        });
+      }
       const currentOrdersList = ordersList.filter(order => (
         order.user.firstName.toLowerCase() === searchOption
         || order.user.lastName.toLowerCase() === searchOption
