@@ -2,6 +2,7 @@ import createOrdersList from './createOrdersList';
 import addTable from './addTable';
 import addOrders from './addOrders';
 import sortByColumn from './sortByColumn';
+import addStatistics from './addStatistics';
 
 export default (async function () {
   const app = document.getElementById('app');
@@ -51,6 +52,7 @@ export default (async function () {
   };
 
   addOrders(body, ordersList);
+  addStatistics(body, ordersList);
 
   body.addEventListener('click', handleShowUserDataInfo);
   head.addEventListener('click', handleSort);
