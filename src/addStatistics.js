@@ -1,4 +1,4 @@
-const addNewStat = (position, stat, sign = true) => {
+const addNewStat = (position, stat = 'n/a', sign = true) => {
   const tr = document.createElement('tr');
   tr.innerHTML = `
     <td>${position}</td>
@@ -17,29 +17,31 @@ const findMedian = (ordersList) => {
     : (sortedList[middle].amount + sortedList[middle + 1].amount) / 2;
 };
 
-const addStatistics = (body, ordersList) => {
+const addStatistics = (body, currentOrderList) => {
   const fragment = document.createDocumentFragment();
-  const orders = Array.from(document.querySelectorAll('tbody tr'));
-  const orderIds = Array.from(new Set(orders.map(order => +order.id.match(/\d+/)[0])));
-  const currentOrderList = ordersList.filter(order => orderIds.indexOf(order.id) >= 0);
+  let ordersCount, ordersTotal, femaleOrders, femaleOrdersTotal,
+    maleOrders, maleOrdersTotal, medianValue,
+    averageCheck, averageFemaleCheck, averageMaleCheck;
 
-  const ordersCount = currentOrderList.length;
-  const ordersTotal = currentOrderList.reduce((sum, order) => sum + order.amount, 0);
-  const femaleOrders = currentOrderList.filter((order) => order.user.gender.toLowerCase() === 'female');
-  const femaleOrdersTotal = femaleOrders.reduce((sum, order) => sum + order.amount, 0);
-  const maleOrders = currentOrderList.filter((order) => order.user.gender.toLowerCase() === 'male');
-  const maleOrdersTotal = femaleOrders.reduce((sum, order) => sum + order.amount, 0);
-  const medianValue = findMedian(currentOrderList);
-  const averageCheck = ordersTotal / ordersCount;
-  const averageFemaleCheck = femaleOrdersTotal / femaleOrders.length;
-  const averageMaleCheck = maleOrdersTotal / maleOrders.length;
+  if(currentOrderList.length !== 0) {
+    ordersCount = currentOrderList.length;
+    ordersTotal = currentOrderList.reduce((sum, order) => sum + order.amount, 0).toFixed(2);
+    femaleOrders = currentOrderList.filter((order) => order.user.gender.toLowerCase() === 'female');
+    femaleOrdersTotal = femaleOrders.reduce((sum, order) => sum + order.amount, 0);
+    maleOrders = currentOrderList.filter((order) => order.user.gender.toLowerCase() === 'male');
+    maleOrdersTotal = maleOrders.reduce((sum, order) => sum + order.amount, 0);
+    medianValue = findMedian(currentOrderList).toFixed(2);
+    averageCheck = (ordersTotal / ordersCount).toFixed(2);
+    averageFemaleCheck = (femaleOrdersTotal / femaleOrders.length).toFixed(2) || 0;
+    averageMaleCheck = (maleOrdersTotal / maleOrders.length).toFixed(2) || 0;
+  }
 
   fragment.appendChild(addNewStat('Orders Count', ordersCount, false));
-  fragment.appendChild(addNewStat('Orders Total', ordersTotal.toFixed(2)));
-  fragment.appendChild(addNewStat('Median Value', medianValue.toFixed(2)));
-  fragment.appendChild(addNewStat('Average Check', averageCheck.toFixed(2)));
-  fragment.appendChild(addNewStat('Average Check (Female)', averageFemaleCheck.toFixed(2)));
-  fragment.appendChild(addNewStat('Average Check (Male)', averageMaleCheck.toFixed(2)));
+  fragment.appendChild(addNewStat('Orders Total', ordersTotal));
+  fragment.appendChild(addNewStat('Median Value', medianValue));
+  fragment.appendChild(addNewStat('Average Check', averageCheck));
+  fragment.appendChild(addNewStat('Average Check (Female)', averageFemaleCheck));
+  fragment.appendChild(addNewStat('Average Check (Male)', averageMaleCheck));
 
   body.appendChild(fragment);
 };
