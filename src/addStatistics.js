@@ -1,8 +1,18 @@
-const addNewStat = (position, stat = 'n/a', sign = true) => {
+const addNewCount = (position, stat = 'n/a') => {
   const tr = document.createElement('tr');
   tr.innerHTML = `
     <td>${position}</td>
-    <td colspan="6">${(sign) ? '$' : ''} ${stat}</td>
+    <td colspan="6">${stat}</td>
+  `;
+
+  return tr;
+};
+
+const addNewStat = (position, stat = 'n/a') => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>${position}</td>
+    <td data-base=${stat} colspan="6">$ ${stat}</td>
   `;
 
   return tr;
@@ -36,7 +46,7 @@ const addStatistics = (body, currentOrderList) => {
     averageMaleCheck = ((maleOrdersTotal / maleOrders.length) || 0).toFixed(2);
   }
 
-  fragment.appendChild(addNewStat('Orders Count', ordersCount, false));
+  fragment.appendChild(addNewCount('Orders Count', ordersCount));
   fragment.appendChild(addNewStat('Orders Total', ordersTotal));
   fragment.appendChild(addNewStat('Median Value', medianValue));
   fragment.appendChild(addNewStat('Average Check', averageCheck));
