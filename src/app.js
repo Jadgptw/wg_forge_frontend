@@ -3,13 +3,16 @@ import addTable from './addTable';
 import addOrders from './addOrders';
 import sortByColumn from './sortByColumn';
 import addStatistics from './addStatistics';
+import addExchange from './addExchange';
 
 export default (async function () {
   const app = document.getElementById('app');
+  app.appendChild(await addExchange());
   app.appendChild(addTable());
 
   const head = document.querySelector('thead');
   const body = document.querySelector('tbody');
+  const exchangeSection = document.querySelector('.exchange');
 
   const ordersList = await createOrdersList();
 
@@ -51,9 +54,21 @@ export default (async function () {
     }
   };
 
+  const handleExchange = (event) => {
+    const currentNode = event.target.parentElement;
+    const orderAmounts = document.querySelectorAll('td[data-base]');
+    const rate = currentNode.getAttribute('data-rate');
+    const money = currentNode.children[0].id;
+
+    orderAmounts.forEach(amount => {
+      amount.textContent = `${money} ${(amount.getAttribute('data-base') * rate).toFixed(2)}`;
+    });
+  };
+
   addOrders(body, ordersList);
   addStatistics(body, ordersList);
 
   body.addEventListener('click', handleShowUserDataInfo);
   head.addEventListener('click', handleSort);
+  exchangeSection.addEventListener('change', handleExchange);
 }());
