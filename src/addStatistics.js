@@ -32,8 +32,8 @@ const addStatistics = (body, currentOrderList) => {
     maleOrdersTotal = maleOrders.reduce((sum, order) => sum + order.amount, 0);
     medianValue = findMedian(currentOrderList).toFixed(2);
     averageCheck = (ordersTotal / ordersCount).toFixed(2);
-    averageFemaleCheck = (femaleOrdersTotal / femaleOrders.length).toFixed(2) || 0;
-    averageMaleCheck = (maleOrdersTotal / maleOrders.length).toFixed(2) || 0;
+    averageFemaleCheck = ((femaleOrdersTotal / femaleOrders.length) || 0).toFixed(2);
+    averageMaleCheck = ((maleOrdersTotal / maleOrders.length) || 0).toFixed(2);
   }
 
   fragment.appendChild(addNewStat('Orders Count', ordersCount, false));
