@@ -11,7 +11,6 @@ const createRate = (rootElement, rates, rate, base = false) => {
 const addExchange = async() => {
   const money = await fetch('https://api.exchangeratesapi.io/latest?base=USD').then(res => res.json());
 
-  console.log(money);
   const div = document.createElement('div');
   div.classList.add('exchange');
   createRate(div, money.rates, money.base, true);
