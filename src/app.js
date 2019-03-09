@@ -4,6 +4,8 @@ import addOrders from './addOrders';
 import sortByColumn from './sortByColumn';
 import addStatistics from './addStatistics';
 import addExchange from './addExchange';
+import addSearch from './addSearch';
+
 
 export default (async function () {
   const app = document.getElementById('app');
@@ -13,6 +15,7 @@ export default (async function () {
   const head = document.querySelector('thead');
   const body = document.querySelector('tbody');
   const exchangeSection = document.querySelector('.exchange');
+  const mainHeader = document.querySelector('.main-header');
 
   const ordersList = await createOrdersList();
 
@@ -36,7 +39,7 @@ export default (async function () {
     let currentNode = event.target;
     while(currentNode !== head) {
       const column = currentNode.textContent.toLowerCase();
-      if(currentNode.nodeName.toLowerCase() === 'th' && column !== 'card number') {
+      if(currentNode.nodeName.toLowerCase() === 'th' && column !== 'card number' && column !== 'search:') {
         const span = document.createElement('span');
         span.innerHTML = '&#8595;';
         if(currentNode.children.length !== 1) {
@@ -65,10 +68,11 @@ export default (async function () {
     });
   };
 
+  head.insertBefore(addSearch(), head.children[0]);
   addOrders(body, ordersList);
   addStatistics(body, ordersList);
 
   body.addEventListener('click', handleShowUserDataInfo);
-  head.addEventListener('click', handleSort);
+  mainHeader.addEventListener('click', handleSort);
   exchangeSection.addEventListener('change', handleExchange);
 }());

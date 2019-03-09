@@ -63,8 +63,10 @@ const sortByColumn = (orderList, column) => {
     case 'card type':
       sortOrder(orderList, 'cardType');
       break;
-    default:
+    case 'location':
       sortLocation(orderList);
+      break;
+    default:
       break;
   }
 };
