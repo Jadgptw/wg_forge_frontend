@@ -19,8 +19,6 @@ export default (async function () {
 
   const ordersList = await createOrdersList();
 
-  console.log(ordersList);
-
   const handleShowUserDataInfo = (event) => {
     let currentNode = event.target;
     while(currentNode !== body) {
@@ -68,11 +66,41 @@ export default (async function () {
     });
   };
 
+  const handleSearch = (event) => {
+    const ENTER = 13;
+    const searchOption = event.target.value.toLowerCase();
+
+    if(event.keyCode === ENTER){
+      event.target.value = '';
+
+      const sortNode = document.querySelector('th > span');
+      const sortOption = (sortNode) ? sortNode.parentElement.firstChild.textContent.toLowerCase() : null;
+      sortByColumn(ordersList, sortOption);
+      const currentOrdersList = ordersList.filter(order => (
+        order.user.firstName.toLowerCase() === searchOption
+        || order.user.lastName.toLowerCase() === searchOption
+        || order.amount === +searchOption
+        || order.cardType.toLowerCase() === searchOption
+        || order.orderCountry.toLowerCase() === searchOption
+        || order.orderIp.toLowerCase() === searchOption
+        || order.transactionId.toLowerCase() === searchOption
+      ));
+
+      body.innerHTML = '';
+      addOrders(body, currentOrdersList);
+      addStatistics(body, currentOrdersList);
+    }
+
+  };
+
   head.insertBefore(addSearch(), head.children[0]);
   addOrders(body, ordersList);
   addStatistics(body, ordersList);
 
+  const search = document.getElementById('search');
+
   body.addEventListener('click', handleShowUserDataInfo);
   mainHeader.addEventListener('click', handleSort);
   exchangeSection.addEventListener('change', handleExchange);
+  search.addEventListener('keyup', handleSearch);
 }());
