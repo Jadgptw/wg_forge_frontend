@@ -1,5 +1,8 @@
 const addTable = () => {
   const table = document.createElement('table');
+  table.classList.add('table');
+  table.classList.add('table-striped');
+  table.classList.add('table-bordered');
   table.innerHTML = `
     <thead>
       <tr class="main-header">
